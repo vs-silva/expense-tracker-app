@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import {ReactElement} from "react";
 
 function App(): ReactElement {
@@ -7,7 +7,7 @@ function App(): ReactElement {
     <>
         <p>Hello world!</p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
