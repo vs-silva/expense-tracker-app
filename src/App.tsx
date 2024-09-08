@@ -1,13 +1,12 @@
-import './App.css'
+import './App.css';
 import {ReactElement} from "react";
+import {ExpensesPage} from "./expenses/page/expenses-page";
 
 function App(): ReactElement {
 
-  return (
-    <>
-        <p>Hello world!</p>
-    </>
-  )
+  return (<div>
+      <ExpensesPage />
+  </div>);
 }
 
-export default App
+export default App;
