@@ -2,18 +2,16 @@ import {describe, expect, test, vi} from "vitest";
 import {faker} from "@faker-js/faker";
 import {ExpensesServicesDriverPorts} from "../ports/driver/expenses-services-driver.ports.ts";
 import {ExpensesService} from "../expenses.service.ts";
-import {ExpenseDTO} from "../core/dtos/expense.dto.ts";
+import type {ExpenseDTO} from "../core/dtos/expense.dto.ts";
 import {ArrayReaderAdapter} from "../adapters/array-reader.adapter.ts";
 import {ArrayWriterAdapter} from "../adapters/array-writer.adapter.ts";
 
 
 describe("Expenses Service tests", () => {
 
-    const fakeDataProvider: [] = [];
-
     const service: ExpensesServicesDriverPorts = ExpensesService(
-        ArrayReaderAdapter(fakeDataProvider),
-        ArrayWriterAdapter(fakeDataProvider)
+        ArrayReaderAdapter(),
+        ArrayWriterAdapter()
     );
 
     describe("addExpenses port tests", () => {
@@ -82,7 +80,6 @@ describe("Expenses Service tests", () => {
             expect(initialExpenses.length).toEqual(0);
 
             const fakeExpense : ExpenseDTO = {
-              id: faker.database.mongodbObjectId(),
               title: faker.lorem.word(),
               description: faker.lorem.sentence(),
               cost: 200
@@ -96,6 +93,7 @@ describe("Expenses Service tests", () => {
             expect(spy).toHaveBeenCalledWith(fakeExpense);
 
             const result = service.getAllExpenses();
+
             expect(result.length).toEqual(1);
 
             expect(result).toEqual(expect.arrayContaining(<ExpenseDTO[]>[

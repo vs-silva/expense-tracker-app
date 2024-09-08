@@ -1,22 +1,38 @@
-import {ExpenseDTO} from "../core/dtos/expense.dto.ts";
+import type {ExpenseDTO} from "../core/dtos/expense.dto.ts";
+import { v4 as uuidv4 } from 'uuid';
 import {ExpensesServiceWriterDrivenPorts} from "../ports/driven/expenses-service-writer-driven.ports.ts";
+import InMemoryDataProvider from "../../../data-provider/in-memory-data-provider.ts";
 
-export function ArrayWriterAdapter(dataProvider:[]): ExpensesServiceWriterDrivenPorts {
-
-    if(!Array.isArray(dataProvider)) {
-        throw new Error("Provide an simple array as dataProvider");
-    }
+export function ArrayWriterAdapter(): ExpensesServiceWriterDrivenPorts {
 
     function add(expense: ExpenseDTO): void {
-        dataProvider.push(<never>{
-            id: expense.id,
+
+        const temporaryCollection: unknown[] = [...InMemoryDataProvider.collection];
+        temporaryCollection.push({
+            id: expense.id || uuidv4() ,
             title: expense.title,
             description: expense.description,
             cost: expense.cost
         });
+
+        InMemoryDataProvider.collection = temporaryCollection;
+    }
+
+    function remove(id: string): void {
+
+        const temporaryCollection: unknown[] = [...InMemoryDataProvider.collection];
+        const index = temporaryCollection.findIndex(item => (item as ExpenseDTO).id === id);
+
+        if(index !== -1) {
+            temporaryCollection.splice(index, 1);
+        }
+
+        InMemoryDataProvider.collection = temporaryCollection;
+
     }
 
     return {
-      add
+      add,
+      remove
     };
 }

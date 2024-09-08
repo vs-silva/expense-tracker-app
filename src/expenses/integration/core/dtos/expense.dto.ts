@@ -1,5 +1,5 @@
 export interface ExpenseDTO {
-    id: string;
+    id?: string;
     title: string;
     description: string;
     cost: number;

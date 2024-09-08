@@ -1,14 +1,11 @@
 import {ExpensesServiceReaderDrivenPorts} from "../ports/driven/expenses-service-reader-driven.ports.ts";
-import {ExpenseDTO} from "../core/dtos/expense.dto.ts";
+import type {ExpenseDTO} from "../core/dtos/expense.dto.ts";
+import InMemoryDataProvider from "../../../data-provider/in-memory-data-provider.ts";
 
-export function ArrayReaderAdapter(dataProvider:[]): ExpensesServiceReaderDrivenPorts {
-
-    if(!Array.isArray(dataProvider)) {
-        throw new Error("Provide an simple array as dataProvider");
-    }
+export function ArrayReaderAdapter(): ExpensesServiceReaderDrivenPorts {
 
     function get(): ExpenseDTO[] {
-        return dataProvider as ExpenseDTO[];
+        return InMemoryDataProvider.collection as ExpenseDTO[];
     }
 
     return {
