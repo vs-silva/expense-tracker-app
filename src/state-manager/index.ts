@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import ExpensesStateManager from "../expenses/state-mananger/expenses-state-manager.ts";
+import ExpensesStateManager from "../expenses/store/expenses-state-manager.ts";
 
 export const store = configureStore({
     reducer: {

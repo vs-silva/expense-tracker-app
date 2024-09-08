@@ -36,7 +36,7 @@ export function ListComponent(props: {expenses?: ExpenseDTO[], emitter?: Expense
         }>{t('expenseMessages.list.addNewExpense').toString()}</button>
         <ul className="list-component__list" data-testid="list-component__list">
             {
-                expenses.map(expense => (
+                expenses.map((expense: ExpenseDTO) => (
                     <li key={expense.id}>
                         <ListItemComponent expense={expense} emitter={emitter}/>
                     </li>

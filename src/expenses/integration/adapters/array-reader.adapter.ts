@@ -4,8 +4,14 @@ import InMemoryDataProvider from "../../../data-provider/in-memory-data-provider
 
 export function ArrayReaderAdapter(): ExpensesServiceReaderDrivenPorts {
 
-    function get(): ExpenseDTO[] {
-        return InMemoryDataProvider.collection as ExpenseDTO[];
+    function get(id?: string): ExpenseDTO[] | ExpenseDTO {
+
+        if(!id) {
+            return InMemoryDataProvider.collection as ExpenseDTO[];
+        }
+
+        return InMemoryDataProvider.collection.find(item => (item as ExpenseDTO).id === id) as ExpenseDTO;
+
     }
 
     return {

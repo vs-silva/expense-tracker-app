@@ -1,9 +1,9 @@
 import {Dispatch, ReactElement, useEffect, useState} from "react";
-import {AppDispatch} from "../../store";
+import {AppDispatch} from "../../state-manager";
 import {useDispatch, useSelector} from "react-redux";
 import type {UnknownAction} from "@reduxjs/toolkit";
 import type {ExpenseDTO} from "../integration/core/dtos/expense.dto.ts";
-import ExpensesStateManager from "../state-mananger/expenses-state-manager.ts";
+import ExpensesStateManager from "../store/expenses-state-manager.ts";
 import {ListComponent} from "../components/list-component/list.component.tsx";
 import eventBus from "../../event-bus";
 import EventBus from "../../event-bus";

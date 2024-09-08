@@ -6,34 +6,47 @@ import {ExpensesServiceWriterDrivenPorts} from "./ports/driven/expenses-service-
 
 export function ExpensesService(reader: ExpensesServiceReaderDrivenPorts, writer: ExpensesServiceWriterDrivenPorts): ExpensesServicesDriverPorts {
 
-    if(!reader) {
-       throw new Error("Reader adapter does not exist");
-    }
-
-    if(!writer) {
-        throw new Error("Writer adapter does not exist");
-    }
-
     function calculateTotalExpensesCost(expenses: ExpenseDTO[]): number {
         return expenses.reduce((accumulator: number, expense: ExpenseDTO):number => ( accumulator + expense.cost), 0);
     }
 
     function getAllExpenses(): ExpenseDTO[] {
-        return reader.get();
+        return reader.get() as ExpenseDTO[];
     }
 
     function registerExpense(expense: ExpenseDTO):void {
-        writer.add(expense);
+        writer.write(expense);
     }
 
     function removeExpense(expenseId: string):void {
         writer.remove(expenseId);
     }
 
+    function getExpenseById(expenseId: string): ExpenseDTO {
+        return reader.get(expenseId) as ExpenseDTO;
+    }
+
+    function removeAllExpenses(): void {
+        writer.remove();
+    }
+
+    function updateExpense(expense: ExpenseDTO): void {
+        const existentExpense: ExpenseDTO | undefined = getExpenseById(expense.id as string);
+
+        if(!existentExpense) {
+            return;
+        }
+
+        writer.write(expense);
+    }
+
     return {
         calculateTotalExpensesCost,
         getAllExpenses,
         registerExpense,
-        removeExpense
+        removeExpense,
+        getExpenseById,
+        removeAllExpenses,
+        updateExpense
     };
 }

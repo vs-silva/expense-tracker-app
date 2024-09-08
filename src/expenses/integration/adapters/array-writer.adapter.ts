@@ -5,11 +5,16 @@ import InMemoryDataProvider from "../../../data-provider/in-memory-data-provider
 
 export function ArrayWriterAdapter(): ExpensesServiceWriterDrivenPorts {
 
-    function add(expense: ExpenseDTO): void {
+    function write(expense: ExpenseDTO): void {
+
+        if(expense.id) {
+            remove(expense.id);
+        }
 
         const temporaryCollection: unknown[] = [...InMemoryDataProvider.collection];
+
         temporaryCollection.push({
-            id: expense.id || uuidv4() ,
+            id: expense.id || uuidv4(),
             title: expense.title,
             description: expense.description,
             cost: expense.cost
@@ -18,7 +23,12 @@ export function ArrayWriterAdapter(): ExpensesServiceWriterDrivenPorts {
         InMemoryDataProvider.collection = temporaryCollection;
     }
 
-    function remove(id: string): void {
+    function remove(id?: string): void {
+
+        if(!id) {
+            InMemoryDataProvider.collection = [];
+            return;
+        }
 
         const temporaryCollection: unknown[] = [...InMemoryDataProvider.collection];
         const index = temporaryCollection.findIndex(item => (item as ExpenseDTO).id === id);
@@ -32,7 +42,7 @@ export function ArrayWriterAdapter(): ExpensesServiceWriterDrivenPorts {
     }
 
     return {
-      add,
+      write,
       remove
     };
 }
